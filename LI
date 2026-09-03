@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Independencia lineal — Matemática I (UNLu)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --musgo-oscuro:#2C3F27;
+    --musgo-medio:#4A6741;
+    --musgo-suave:#9ABF8E;
+    --fondo-recordar:#EAF0E5;
+    --fondo-pensar:#F0F6EE;
+    --acero-oscuro:#162839;
+    --acero-medio:#2E5266;
+    --acero-claro:#6A9AB0;
+    --fondo-economia:#E0EEF4;
+    --fondo-importante:#EAF3F8;
+    --azul-unlu:#1B4F8A;
+    --grafito:#2C2C2A;
+    --papel:#FAF9F5;
+    --linea:#DAD6CB;
+    --radio-card:12px;
+    --radio-chico:7px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+
+  body{
+    margin:0;
+    background:var(--papel);
+    color:var(--grafito);
+    font-family:'Public Sans', sans-serif;
+    font-size:16.5px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  h1,h2,h3{
+    font-family:'Fraunces', serif;
+    font-optical-sizing:auto;
+    color:var(--musgo-oscuro);
+    margin:0 0 0.5em 0;
+    line-height:1.15;
+  }
+
+  a{color:var(--azul-unlu);}
+
+  .envoltura{
+    max-width:880px;
+    margin:0 auto;
+    padding:0 24px;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    padding:56px 0 40px 0;
+    border-bottom:1px solid var(--linea);
+  }
+  .hero .rotulo{
+    font-size:0.92rem;
+    color:var(--acero-medio);
+    font-weight:600;
+    letter-spacing:0.01em;
+    margin-bottom:10px;
+  }
+  .hero h1{
+    font-size:clamp(1.9rem, 4vw, 2.75rem);
+    font-weight:600;
+    max-width:15ch;
+  }
+  .hero .subtitulo{
+    font-size:1.15rem;
+    color:var(--acero-oscuro);
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-weight:400;
+    max-width:32ch;
+    margin-bottom:22px;
+  }
+  .hero p.motivacion{
+    max-width:64ch;
+    font-size:1.03rem;
+  }
+  .hero-figura{
+    margin:28px 0 8px 0;
+  }
+
+  .formula-linea{
+    text-align:center;
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-size:1.05rem;
+    color:var(--acero-oscuro);
+    padding:6px 10px;
+    margin:14px 0;
+  }
+
+  .ecuacion-vectores{
+    text-align:center;
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-size:1.05rem;
+    color:var(--acero-oscuro);
+    padding:6px 10px;
+    margin:14px 0;
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:10px 26px;
+  }
+  .pregunta-central{
+    text-align:center;
+    font-style:italic;
+    max-width:52ch;
+    margin:14px auto 0 auto;
+  }
+
+  .indice-rapido{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px 18px;
+    margin-top:26px;
+    padding-top:18px;
+    border-top:1px dashed var(--linea);
+  }
+  .indice-rapido a{
+    font-size:0.92rem;
+    color:var(--acero-medio);
+    text-decoration:none;
+    border-bottom:1px solid transparent;
+  }
+  .indice-rapido a:hover{border-bottom-color:var(--acero-medio);}
+
+  /* ---------- SECCIONES ---------- */
+  section{padding:44px 0;}
+  section + section{border-top:1px solid var(--linea);}
+  section h2{font-size:1.55rem; font-weight:600;}
+  .eyebrow-seccion{
+    font-size:0.85rem;
+    color:var(--acero-medio);
+    font-weight:600;
+    margin-bottom:6px;
+  }
+
+  /* ---------- CAJAS (equivalentes a cajaVerde / cajaAzul / cajaImportante) ---------- */
+  .caja{
+    border-radius:var(--radio-card);
+    padding:20px 24px;
+    margin:18px 0;
+  }
+  .caja-verde{
+    background:var(--fondo-recordar);
+    border-left:4px solid var(--musgo-medio);
+    color:var(--musgo-oscuro);
+  }
+  .caja-azul{
+    background:var(--fondo-economia);
+    border-left:4px solid var(--acero-medio);
+    color:var(--acero-oscuro);
+  }
+  .caja-pensar{
+    background:var(--fondo-pensar);
+    border-left:4px solid var(--musgo-suave);
+    color:var(--musgo-oscuro);
+    font-style:italic;
+  }
+  .caja-importante{
+    background:var(--fondo-importante);
+    border-left:4px solid var(--acero-claro);
+    color:var(--acero-oscuro);
+  }
+  .caja h3{
+    font-size:1rem;
+    text-transform:none;
+    margin-bottom:8px;
+    color:inherit;
+  }
+  .caja p:last-child{margin-bottom:0;}
+
+  /* ---------- TABLA RESULTADOS CLAVE ---------- */
+  table.tabla-resultados{
+    width:100%;
+    border-collapse:collapse;
+    margin:18px 0;
+    font-size:0.95rem;
+  }
+  table.tabla-resultados th{
+    background:var(--acero-medio);
+    color:#fff;
+    text-align:left;
+    padding:10px 14px;
+    font-weight:600;
+  }
+  table.tabla-resultados td{
+    padding:10px 14px;
+    border-bottom:1px solid var(--linea);
+    vertical-align:top;
+  }
+  table.tabla-resultados tr:nth-child(even) td{background:var(--fondo-economia);}
+  .tabla-scroll{overflow-x:auto;}
+
+  /* ---------- EXPLORADOR DE RANGO ---------- */
+  .explorador{
+    background:#fff;
+    border:1px solid var(--linea);
+    border-radius:var(--radio-card);
+    padding:26px;
+    margin-top:18px;
+  }
+  .instrucciones-uso{
+    font-size:0.92rem;
+    color:var(--acero-medio);
+    margin-bottom:16px;
+  }
+
+  .matriz-y-botones{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:28px;
+    align-items:start;
+  }
+  @media (max-width:680px){
+    .matriz-y-botones{grid-template-columns:1fr;}
+  }
+
+  .matriz-grid{
+    display:inline-grid;
+    grid-template-columns:auto repeat(3, 62px);
+    gap:6px 8px;
+    align-items:center;
+  }
+  .matriz-grid .etiqueta-fila{
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    color:var(--acero-medio);
+    padding-right:4px;
+    font-size:0.95rem;
+  }
+  .matriz-grid input{
+    width:100%;
+    padding:8px 6px;
+    text-align:center;
+    border:1px solid var(--linea);
+    border-radius:var(--radio-chico);
+    font-family:'Public Sans', sans-serif;
+    font-size:0.98rem;
+    color:var(--grafito);
+    background:var(--papel);
+  }
+  .matriz-grid input:focus{
+    outline:2px solid var(--azul-unlu);
+    outline-offset:1px;
+    background:#fff;
+  }
+  .corchete-izq, .corchete-der{
+    font-size:2.6rem;
+    color:var(--linea);
+    align-self:center;
+  }
+
+  .botonera{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .fila-presets{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  button.chip{
+    border:1px solid var(--acero-claro);
+    background:#fff;
+    color:var(--acero-medio);
+    padding:7px 13px;
+    border-radius:999px;
+    font-size:0.85rem;
+    cursor:pointer;
+    font-family:'Public Sans', sans-serif;
+    transition:background 0.15s ease, color 0.15s ease;
+  }
+  button.chip:hover{background:var(--fondo-economia);}
+
+  button.accion-principal{
+    background:var(--azul-unlu);
+    color:#fff;
+    border:none;
+    padding:11px 20px;
+    border-radius:var(--radio-chico);
+    font-size:0.97rem;
+    font-weight:600;
+    cursor:pointer;
+    align-self:flex-start;
+    margin-top:6px;
+  }
+  button.accion-principal:hover{background:#153f6e;}
+
+  .resultado-explorador{
+    margin-top:26px;
+    display:none;
+  }
+  .resultado-explorador.visible{display:block;}
+
+  .calculo-determinante{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    margin:16px 0;
+  }
+  .paso-det{
+    background:var(--fondo-economia);
+    border-radius:var(--radio-chico);
+    padding:12px 16px;
+  }
+  .paso-det .paso-desc{
+    font-size:0.78rem;
+    color:var(--acero-medio);
+    margin-bottom:6px;
+    font-weight:600;
+  }
+  .paso-det table{border-collapse:collapse;}
+  .paso-det td{
+    padding:3px 9px;
+    text-align:center;
+    font-size:0.92rem;
+    color:var(--acero-oscuro);
+    font-variant-numeric:tabular-nums;
+  }
+  .formula-det{
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-size:0.97rem;
+    color:var(--acero-oscuro);
+    overflow-wrap:break-word;
+  }
+  .formula-det.formula-final{
+    font-weight:700;
+    font-size:1.08rem;
+    font-style:normal;
+  }
+
+  .conclusion-explorador{
+    display:grid;
+    grid-template-columns:1fr 190px;
+    gap:24px;
+    align-items:center;
+    margin-top:8px;
+  }
+  @media (max-width:680px){
+    .conclusion-explorador{grid-template-columns:1fr;}
+  }
+  .texto-conclusion p{margin:0 0 10px 0;}
+  .texto-conclusion .det-nota{
+    font-size:0.9rem;
+    color:var(--acero-medio);
+  }
+
+  .diagrama-caja{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:6px;
+  }
+  .diagrama-caja svg{width:150px; height:150px;}
+  .diagrama-caja .rotulo-diagrama{
+    font-size:0.8rem;
+    color:var(--acero-medio);
+    text-align:center;
+  }
+
+  /* ---------- CASO CON PARÁMETRO K ---------- */
+  .panel-k{
+    background:#fff;
+    border:1px solid var(--linea);
+    border-radius:var(--radio-card);
+    padding:26px;
+    margin-top:18px;
+  }
+  .vectores-k{
+    display:flex;
+    gap:22px;
+    flex-wrap:wrap;
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    color:var(--acero-oscuro);
+    margin-bottom:20px;
+    font-size:1.02rem;
+  }
+  .slider-fila{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    margin-bottom:6px;
+  }
+  input[type=range]{
+    flex:1;
+    accent-color:var(--azul-unlu);
+  }
+  .k-lectura{
+    font-variant-numeric:tabular-nums;
+    min-width:70px;
+    text-align:right;
+    font-weight:600;
+    color:var(--acero-oscuro);
+  }
+  .recta-numerica{
+    position:relative;
+    height:34px;
+    margin:14px 0 22px 0;
+    border-top:2px solid var(--linea);
+  }
+  .marca-critica{
+    position:absolute;
+    top:-6px;
+    width:1px;
+    height:12px;
+    background:var(--musgo-medio);
+  }
+  .marca-critica span{
+    position:absolute;
+    top:14px;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:0.78rem;
+    color:var(--musgo-medio);
+    white-space:nowrap;
+  }
+  #k-marker{
+    position:absolute;
+    top:-9px;
+    width:16px;
+    height:16px;
+    border-radius:50%;
+    background:var(--azul-unlu);
+    transform:translateX(-50%);
+    transition:left 0.05s linear;
+  }
+  .det-k-valor{
+    font-size:1rem;
+    margin-bottom:14px;
+  }
+  .det-k-valor strong{
+    font-variant-numeric:tabular-nums;
+    color:var(--acero-oscuro);
+  }
+  .k-msg{
+    padding:14px 16px;
+    border-radius:var(--radio-chico);
+    font-size:0.95rem;
+  }
+  .k-msg.ok{background:var(--fondo-recordar); color:var(--musgo-oscuro);}
+  .k-msg.warn{background:var(--fondo-importante); color:var(--acero-oscuro); font-weight:600;}
+
+  /* ---------- AUTOEVALUACIÓN ---------- */
+  .quiz-item{
+    background:#fff;
+    border:1px solid var(--linea);
+    border-radius:var(--radio-card);
+    padding:20px 22px;
+    margin-bottom:16px;
+  }
+  .quiz-item .enunciado{
+    font-weight:600;
+    color:var(--acero-oscuro);
+    margin-bottom:12px;
+  }
+  .quiz-item label{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    padding:6px 0;
+    cursor:pointer;
+    font-size:0.97rem;
+  }
+  .quiz-item input[type=radio]{margin-top:4px;}
+  button.chip-verificar{
+    margin-top:12px;
+    border:1px solid var(--musgo-medio);
+    background:var(--fondo-recordar);
+    color:var(--musgo-oscuro);
+    padding:8px 16px;
+    border-radius:var(--radio-chico);
+    font-size:0.88rem;
+    cursor:pointer;
+    font-weight:600;
+  }
+  .quiz-feedback{
+    margin-top:12px;
+    padding:12px 14px;
+    border-radius:var(--radio-chico);
+    font-size:0.92rem;
+    display:none;
+  }
+  .quiz-feedback.ok{display:block; background:var(--fondo-recordar); color:var(--musgo-oscuro);}
+  .quiz-feedback.bad{display:block; background:#F7E9E5; color:#7A3B2E;}
+  .quiz-feedback.warn{display:block; background:var(--fondo-importante); color:var(--acero-oscuro);}
+
+  /* ---------- CIERRE ---------- */
+  footer{
+    padding:36px 0 60px 0;
+    color:var(--acero-medio);
+    font-size:0.88rem;
+  }
+  footer .linea-final{
+    border-top:1px solid var(--linea);
+    padding-top:18px;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important; scroll-behavior:auto !important;}
+  }
+</style>
+</head>
+<body>
+
+<div class="envoltura">
+
+  <section class="hero">
+    <div class="rotulo">Matemática I (10025) · Unidad 8 · UNLu</div>
+    <h1>Independencia lineal</h1>
+    <p class="subtitulo">¿por qué estos vectores generan un plano y no todo R³?</p>
+
+    <p class="motivacion">
+      Recordemos el problema de la carpintería que trabajamos en la Práctica 2
+      (Ejercicio 4): un carpintero fabrica tres tipos de ventanas —Rústicas, Modernas
+      y Coloniales— combinando tres materias primas: acero, madera y vidrio. Cada
+      modelo queda determinado por la cantidad de cada insumo que requiere, es decir,
+      por un vector de R³:
+    </p>
+    <div class="ecuacion-vectores">
+      <span>V<sub>R</sub> = (5, 20, 16)</span>
+      <span>V<sub>M</sub> = (7, 18, 12)</span>
+      <span>V<sub>C</sub> = (6, 25, 8)</span>
+    </div>
+    <p class="motivacion">donde cada terna representa (acero, madera, vidrio).</p>
+    <p class="motivacion">
+      Supongamos ahora que la carpintería quiere lanzar un <strong>cuarto modelo</strong>
+      de ventana. Antes de diseñarlo, cabe preguntarse:
+    </p>
+    <p class="pregunta-central">
+      ¿Ese nuevo modelo podría requerir una combinación de insumos nueva, o
+      necesariamente terminará siendo una mezcla de los tres modelos que ya existen?
+    </p>
+
+    <div class="indice-rapido">
+      <a href="#definicion">Definición</a>
+      <a href="#explorador">Explorador de independencia (R³)</a>
+      <a href="#parametro">Caso con parámetro k</a>
+      <a href="#resultados-clave">Resultados clave</a>
+      <a href="#conclusion-ventanas">Volvamos a la carpintería</a>
+      <a href="#autoevaluacion">Autoevaluación</a>
+    </div>
+  </section>
+
+  <section id="definicion">
+    <div class="eyebrow-seccion">Punto de partida</div>
+    <h2>De la combinación lineal a la dependencia</h2>
+
+    <div class="caja caja-pensar">
+      Antes de ver la definición formal: pensemos un caso concreto. Si supieras que
+      V₃ = 2·V₁ − V₂, ¿tendría sentido seguir tratando a los tres vectores como si
+      aportaran tres direcciones distintas al generar un subespacio? ¿Cuántas
+      direcciones aportan en realidad?
+    </div>
+
+    <div class="caja caja-verde">
+      <h3>Definición</h3>
+      <p>
+        Un conjunto de vectores <strong>{V₁, V₂, …, V<sub>k</sub>}</strong> es
+        <strong>linealmente dependiente</strong> si alguno de ellos puede escribirse como
+        combinación lineal de los demás. Si esto no ocurre para ninguno, el conjunto es
+        <strong>linealmente independiente</strong>.
+      </p>
+      <p>
+        De manera equivalente: un conjunto <strong>{V₁, V₂, …, V<sub>k</sub>}</strong> es
+        <strong>linealmente independiente</strong> si la única combinación lineal que da el
+        vector nulo,
+      </p>
+      <div class="formula-linea">
+        c<sub>1</sub>V<sub>1</sub> + c<sub>2</sub>V<sub>2</sub> + … + c<sub>k</sub>V<sub>k</sub> = 0
+      </div>
+      <p>es aquella con c<sub>1</sub> = c<sub>2</sub> = ⋯ = c<sub>k</sub> = 0.</p>
+    </div>
+  </section>
+
+  <section id="sistema-homogeneo">
+    <p class="pregunta-central">
+      Plantear esta igualdad equivale a resolver un sistema lineal homogéneo en las incógnitas
+      c₁, …, c<sub>k</sub>.
+    </p>
+
+    <div class="eyebrow-seccion">De la definición al determinante</div>
+    <h2>¿Cuándo ese sistema tiene únicamente la solución trivial?</h2>
+
+    <div class="caja caja-azul">
+      <h3>Caso particular: k = n vectores de R<sup>n</sup></h3>
+      <p>
+        Si trabajamos con n vectores de R<sup>n</sup>, el sistema homogéneo que se obtiene al
+        plantear c₁V₁ + ⋯ + c<sub>n</sub>V<sub>n</sub> = 0 es un sistema <strong>cuadrado</strong>:
+        n ecuaciones con n incógnitas c₁, …, c<sub>n</sub>.
+      </p>
+    </div>
+
+    <p>
+      Y ya sabemos (Práctica 3) que un sistema homogéneo cuadrado tiene <strong>únicamente la
+      solución trivial</strong> si y solo si el determinante de la matriz de los coeficientes es
+      <strong>distinto de cero</strong>.
+    </p>
+
+    <div class="caja caja-importante">
+      <h3>Conclusión</h3>
+      <p>
+        Si tenemos n vectores de R<sup>n</sup>, el conjunto es linealmente independiente ⟺ el
+        determinante de la matriz que los tiene como filas (o como columnas) es
+        <strong>distinto de cero</strong>.
+      </p>
+    </div>
+  </section>
+
+  <section id="explorador">
+    <div class="eyebrow-seccion">Herramienta interactiva</div>
+    <h2>Explorador de independencia lineal en R³</h2>
+    <p>
+      Como siempre vamos a trabajar con exactamente tres vectores de R³, el criterio más directo
+      es el determinante: si el determinante de la matriz que forman es distinto de cero, los tres
+      vectores son linealmente independientes y generan todo R³; si es igual a cero, son
+      linealmente dependientes. Cargá tres vectores (uno por fila) o elegí uno de los casos ya
+      resueltos en la Práctica 8.
+    </p>
+
+    <div class="explorador">
+      <p class="instrucciones-uso">
+        Cada fila es un vector de R³. Podés escribir números enteros o con decimales.
+      </p>
+
+      <div class="matriz-y-botones">
+        <div>
+          <div class="matriz-grid">
+            <span></span><span></span><span></span><span></span>
+            <span class="etiqueta-fila">V₁</span>
+            <input type="number" id="v-0-0" value="1">
+            <input type="number" id="v-0-1" value="2">
+            <input type="number" id="v-0-2" value="1">
+            <span class="etiqueta-fila">V₂</span>
+            <input type="number" id="v-1-0" value="0">
+            <input type="number" id="v-1-1" value="1">
+            <input type="number" id="v-1-2" value="5">
+            <span class="etiqueta-fila">V₃</span>
+            <input type="number" id="v-2-0" value="1">
+            <input type="number" id="v-2-1" value="0">
+            <input type="number" id="v-2-2" value="1">
+          </div>
+        </div>
+
+        <div class="botonera">
+          <div class="instrucciones-uso" style="margin-bottom:2px;">Casos ya resueltos en el apunte:</div>
+          <div class="fila-presets">
+            <button class="chip" onclick="cargarPreset('li')">LI — det ≠ 0 (Práctica 8, ejemplo 1)</button>
+            <button class="chip" onclick="cargarPreset('plano')">LD — det = 0 (caso 1)</button>
+            <button class="chip" onclick="cargarPreset('recta')">LD — det = 0 (caso 2)</button>
+            <button class="chip" onclick="cargarPreset('nulo')">Incluye el vector nulo</button>
+          </div>
+          <button class="accion-principal" onclick="analizar()">Calcular determinante y decidir</button>
+        </div>
+      </div>
+
+      <div class="resultado-explorador" id="resultado-explorador">
+        <h3 style="font-size:0.95rem; color:var(--acero-medio); text-transform:none;">Cálculo del determinante</h3>
+        <div class="calculo-determinante" id="calculo-determinante"></div>
+
+        <div class="conclusion-explorador">
+          <div class="texto-conclusion">
+            <p id="texto-conclusion-principal"></p>
+          </div>
+          <div class="diagrama-caja">
+            <svg viewBox="0 0 200 220" id="svg-diagrama">
+              <polygon points="100,40 160,75 100,110 40,75" fill="none" stroke="var(--acero-claro)" stroke-width="1.4"/>
+              <polygon points="40,75 100,110 100,180 40,145" fill="none" stroke="var(--acero-claro)" stroke-width="1.4"/>
+              <polygon points="160,75 100,110 100,180 160,145" fill="none" stroke="var(--acero-claro)" stroke-width="1.4"/>
+
+              <g id="d-space">
+                <polygon points="100,40 160,75 100,110 40,75" fill="var(--azul-unlu)" opacity="0.28"/>
+                <polygon points="40,75 100,110 100,180 40,145" fill="var(--azul-unlu)" opacity="0.4"/>
+                <polygon points="160,75 100,110 100,180 160,145" fill="var(--azul-unlu)" opacity="0.22"/>
+              </g>
+              <g id="d-menor">
+                <polygon points="100,40 160,75 100,110 40,75" fill="var(--acero-claro)" opacity="0.22"/>
+                <line x1="100" y1="40" x2="100" y2="180" stroke="var(--acero-claro)" stroke-width="2" stroke-dasharray="4 3"/>
+              </g>
+
+              <circle cx="100" cy="110" r="2.4" fill="var(--grafito)"/>
+              <text x="106" y="118" font-size="9" fill="var(--grafito)" font-family="Public Sans, sans-serif">0</text>
+            </svg>
+            <div class="rotulo-diagrama" id="rotulo-diagrama">Subespacio generado (esquema)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="caja caja-pensar">
+      Probá cargar el preset "LD — det = 0 (caso 1)". El determinante da cero, así que ya sabemos
+      que los tres vectores son LD. Pero con el determinante solo no alcanza para decir si generan
+      un plano o una recta: ¿qué otra herramienta (de la Práctica 9 o 10) necesitarías para
+      precisar la dimensión exacta del subespacio que generan?
+    </div>
+  </section>
+
+  <section id="parametro">
+    <div class="eyebrow-seccion">Vectores con parámetro</div>
+    <h2>Un mismo conjunto, según el valor de k</h2>
+    <p>
+      Este es el Ejercicio 10 de la Práctica 8: los vectores no son fijos, dependen de un
+      parámetro. La pregunta cambia de "¿son LI o LD?" a "¿para qué valores de k son LI o LD?".
+      Movés el control y observás cómo cambia el determinante en tiempo real.
+    </p>
+
+    <div class="panel-k">
+      <div class="vectores-k">
+        <span>V₁ = (1, 0, k)</span>
+        <span>V₂ = (k, 0, 2)</span>
+        <span>V₃ = (1, 2, 2)</span>
+      </div>
+
+      <div class="slider-fila">
+        <span style="font-size:0.9rem; color:var(--acero-medio);">k = −3</span>
+        <input type="range" id="k-slider" min="-3" max="3" step="0.01" value="0">
+        <span style="font-size:0.9rem; color:var(--acero-medio);">k = 3</span>
+      </div>
+      <div style="text-align:right; margin-bottom:4px;">
+        <span class="k-lectura" id="k-value">0</span>
+      </div>
+
+      <div class="recta-numerica">
+        <div class="marca-critica" style="left:26.4%;"><span>−√2</span></div>
+        <div class="marca-critica" style="left:73.6%;"><span>√2</span></div>
+        <div id="k-marker"></div>
+      </div>
+
+      <p class="det-k-valor">
+        det(k) = 2k² − 4 &nbsp;→&nbsp; con k actual: <strong id="k-det">−4</strong>
+      </p>
+
+      <div class="k-msg ok" id="k-message">
+        Con k = 0, det = −4 ≠ 0: los vectores V₁, V₂ y V₃ son linealmente independientes y generan
+        todo R³.
+      </div>
+    </div>
+
+    <div class="caja caja-azul">
+      <h3>Lo que hay que poder justificar en el parcial</h3>
+      <p>
+        No alcanza con decir "el determinante da 2k² − 4". Hay que explicar por qué esa expresión
+        se anula exactamente en dos valores (es una ecuación cuadrática en k) y qué significa cada
+        región: para k = ±√2 los tres vectores son LD y generan, a lo sumo, un plano; para
+        cualquier otro valor real de k, son LI y generan todo R³.
+      </p>
+    </div>
+  </section>
+
+  <section id="resultados-clave">
+    <div class="eyebrow-seccion">Antes de la autoevaluación</div>
+    <h2>Resultados clave</h2>
+    <p>
+      A modo de síntesis de todo lo que vimos —la definición, su vínculo con el sistema
+      homogéneo, el explorador y el caso con parámetro k— estos son los criterios que permiten
+      decidir, con un cálculo breve o incluso sin ningún cálculo, si un conjunto de vectores es
+      linealmente independiente.
+    </p>
+
+    <div class="tabla-scroll">
+    <table class="tabla-resultados">
+      <thead>
+        <tr><th>Situación</th><th>Criterio</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Un vector V</td>
+          <td>Es LI si y solo si V ≠ (0,0,…,0)</td>
+        </tr>
+        <tr>
+          <td>Dos vectores V₁, V₂</td>
+          <td>Son LI si y solo si no son múltiplos (paralelos) entre sí</td>
+        </tr>
+        <tr>
+          <td>Tres vectores de R³</td>
+          <td>Son LD si y solo si son coplanares</td>
+        </tr>
+        <tr>
+          <td>k vectores de R<sup>n</sup>, con k &gt; n</td>
+          <td>Son siempre LD (no puede haber más de n direcciones independientes en R<sup>n</sup>)</td>
+        </tr>
+        <tr>
+          <td>n vectores de R<sup>n</sup></td>
+          <td>Son LI si y solo si el determinante de la matriz que forman es distinto de cero</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+
+    <div class="caja caja-importante">
+      <h3>Criterio de evaluación</h3>
+      <p>
+        En un parcial o final, escribir "det = 0, entonces LD" sin decir <em>por qué</em> ese
+        criterio es válido no alcanza. La justificación esperada es: "como el determinante de la
+        matriz formada por los tres vectores es cero, no pueden ser linealmente independientes;
+        por lo tanto son LD y generan, a lo sumo, un subespacio de dimensión 2".
+      </p>
+    </div>
+  </section>
+
+  <section id="conclusion-ventanas">
+    <div class="eyebrow-seccion">Cerrando el círculo</div>
+    <h2>Volvamos a la carpintería</h2>
+    <p>
+      Al principio de esta guía nos preguntamos si un cuarto modelo de ventana podría requerir una
+      combinación de insumos nueva, o si necesariamente terminaría siendo una mezcla de los tres
+      modelos que ya existen. Ya tenemos las herramientas para responder con precisión: calculemos
+      el determinante de la matriz formada por V<sub>R</sub>, V<sub>M</sub> y V<sub>C</sub>.
+    </p>
+
+    <div class="formula-linea">
+      det = 5·(18·8 − 12·25) − 20·(7·8 − 12·6) + 16·(7·25 − 18·6)
+    </div>
+    <div class="formula-linea">
+      det = 5·(−156) − 20·(−16) + 16·(67) = −780 + 320 + 1072 = 612
+    </div>
+
+    <p>
+      Como det = 612 ≠ 0, los vectores V<sub>R</sub>, V<sub>M</sub> y V<sub>C</sub> son
+      linealmente independientes. En R³, tres vectores linealmente independientes generan todo el
+      espacio: forman una base.
+    </p>
+
+    <div class="caja caja-importante">
+      <h3>Conclusión</h3>
+      <p>
+        Cualquier combinación posible de acero, madera y vidrio —incluida la que necesitaría un
+        cuarto modelo de ventana— ya puede escribirse como combinación lineal de los tres modelos
+        existentes. No es que el cuarto modelo "sobre": es que, matemáticamente, en R³ no queda
+        ninguna dirección nueva por cubrir una vez que ya se tienen tres vectores linealmente
+        independientes.
+      </p>
+    </div>
+
+    <div class="caja caja-pensar">
+      Esta es una conclusión puramente algebraica: no garantiza que los coeficientes de esa
+      combinación sean cantidades físicamente razonables (podrían resultar negativos, por
+      ejemplo). Decidir si esa combinación es viable en la práctica ya es un problema distinto,
+      más cercano a la optimización que a la independencia lineal.
+    </div>
+  </section>
+
+  <section id="autoevaluacion">
+    <div class="eyebrow-seccion">Antes de pasar a Bases y Dimensión</div>
+    <h2>Autoevaluación</h2>
+    <p>
+      Cinco preguntas para revisar si podés justificar, no solo calcular. Elegí una opción y
+      verificá: la devolución explica el porqué, esté bien o mal la respuesta elegida.
+    </p>
+
+    <div class="quiz-item">
+      <div class="enunciado">1. Dados V₁ = (2,4,6) y V₂ = (1,2,3), el conjunto {V₁, V₂} es:</div>
+      <label><input type="radio" name="q1" data-correct="false" data-explain="Tener componentes distintas no dice nada sobre dependencia lineal: lo que importa es si un vector es múltiplo del otro.">LI, porque tienen distintas componentes</label>
+      <label><input type="radio" name="q1" data-correct="true" data-explain="Correcto: V₁ = 2·V₂, así que uno es múltiplo del otro. Dos vectores son LD si y solo si son paralelos (múltiplos entre sí).">LD, porque V₁ = 2·V₂</label>
+      <label><input type="radio" name="q1" data-correct="false" data-explain="Con dos vectores no hace falta calcular ningún determinante: alcanza con ver si uno es múltiplo del otro.">No se puede determinar sin calcular un determinante</label>
+      <label><input type="radio" name="q1" data-correct="false" data-explain="Que ningún vector sea nulo no garantiza independencia: V₁ y V₂ son ambos no nulos y sin embargo son LD.">LI, porque ningún vector es nulo</label>
+      <button class="chip-verificar quiz-check">Verificar</button>
+      <div class="quiz-feedback"></div>
+    </div>
+
+    <div class="quiz-item">
+      <div class="enunciado">2. Sin hacer ningún cálculo, ¿qué se puede afirmar sobre un conjunto de 4 vectores de R³?</div>
+      <label><input type="radio" name="q2" data-correct="false" data-explain="La cantidad de vectores no garantiza independencia; al contrario, en R³ no puede haber más de 3 vectores LI.">Son LI porque hay muchos vectores</label>
+      <label><input type="radio" name="q2" data-correct="true" data-explain="Correcto: en R³ como máximo puede haber 3 vectores linealmente independientes. Un cuarto vector siempre podrá escribirse como combinación lineal de los otros tres.">Son necesariamente LD, porque en R³ no puede haber más de 3 vectores LI</label>
+      <label><input type="radio" name="q2" data-correct="false" data-explain="Generar un hiperplano es un concepto de variedades lineales en R con n>3; en R³ el subespacio generado por vectores dependientes es, a lo sumo, un plano.">Generan un hiperplano</label>
+      <label><input type="radio" name="q2" data-correct="false" data-explain="Sí se puede afirmar algo, y sin calcular nada: la cantidad de vectores (4) supera la dimensión del espacio (3).">No se puede afirmar nada sin calcular</label>
+      <button class="chip-verificar quiz-check">Verificar</button>
+      <div class="quiz-feedback"></div>
+    </div>
+
+    <div class="quiz-item">
+      <div class="enunciado">3. El determinante de la matriz formada por tres vectores de R³ dio 0. ¿Qué se concluye?</div>
+      <label><input type="radio" name="q3" data-correct="false" data-explain="Si fueran LI, el determinante debería ser distinto de cero. Un determinante nulo indica justamente lo contrario.">Son linealmente independientes</label>
+      <label><input type="radio" name="q3" data-correct="true" data-explain="Correcto: determinante cero es exactamente el criterio de dependencia lineal para tres vectores de R³. Ojo: esto solo alcanza para decir que son LD; para saber si generan un plano o una recta hace falta calcular el rango (Práctica 9 y 10), no solo el determinante.">Son linealmente dependientes</label>
+      <label><input type="radio" name="q3" data-correct="false" data-explain="Es una conclusión demasiado fuerte: el determinante solo permite distinguir LI de LD. Para saber si el subespacio generado es un plano o una recta hace falta el rango, no alcanza con el determinante.">Generan, a lo sumo, un plano</label>
+      <label><input type="radio" name="q3" data-correct="false" data-explain="Para generar todo R³ hacen falta 3 vectores LI, es decir, determinante distinto de cero.">Generan todo R³</label>
+      <button class="chip-verificar quiz-check">Verificar</button>
+      <div class="quiz-feedback"></div>
+    </div>
+
+    <div class="quiz-item">
+      <div class="enunciado">4. Si planteamos c₁V₁ + c₂V₂ + c₃V₃ = 0 para tres vectores de R³, ¿qué tipo de sistema obtenemos en las incógnitas c₁, c₂, c₃?</div>
+      <label><input type="radio" name="q4" data-correct="true" data-explain="Correcto: son 3 ecuaciones (una por cada coordenada) con 3 incógnitas (c₁, c₂, c₃). Por ser cuadrado, podemos aplicar el resultado de la Práctica 3: tiene única solución (la trivial) si y solo si el determinante de los coeficientes es distinto de cero.">Un sistema homogéneo cuadrado: 3 ecuaciones con 3 incógnitas</label>
+      <label><input type="radio" name="q4" data-correct="false" data-explain="El sistema siempre es homogéneo: el vector nulo está igualado en el miembro derecho de cada ecuación.">Un sistema no homogéneo</label>
+      <label><input type="radio" name="q4" data-correct="false" data-explain="Cuando trabajamos con n vectores de R^n, la cantidad de incógnitas (los coeficientes c_i) coincide con la cantidad de ecuaciones: por eso el sistema es cuadrado.">Un sistema con más incógnitas que ecuaciones</label>
+      <label><input type="radio" name="q4" data-correct="false" data-explain="Todo sistema homogéneo tiene al menos la solución trivial (todos los c_i en cero); lo que puede variar es si esa es la única solución o si hay infinitas.">Un sistema que nunca tiene solución</label>
+      <button class="chip-verificar quiz-check">Verificar</button>
+      <div class="quiz-feedback"></div>
+    </div>
+
+    <div class="quiz-item">
+      <div class="enunciado">5. Para V₁=(1,0,k), V₂=(k,0,2), V₃=(1,2,2) —el caso con parámetro que exploramos antes—, el determinante es 2k² − 4. ¿Para qué valores de k son linealmente dependientes?</div>
+      <label><input type="radio" name="q5" data-correct="false" data-explain="Con k=0, det = 2·0² − 4 = −4 ≠ 0: en ese caso los vectores son linealmente independientes, no dependientes.">k = 0</label>
+      <label><input type="radio" name="q5" data-correct="true" data-explain="Correcto: 2k² − 4 = 0 se cumple exactamente cuando k² = 2, es decir, k = √2 o k = −√2. Para cualquier otro valor real de k, el determinante es distinto de cero y los vectores son LI.">k = √2 o k = −√2</label>
+      <label><input type="radio" name="q5" data-correct="false" data-explain="2k² − 4 es una expresión que sí se anula, y lo hace exactamente en dos valores reales de k.">Para ningún valor real de k</label>
+      <label><input type="radio" name="q5" data-correct="false" data-explain="Para la gran mayoría de los valores de k, el determinante es distinto de cero (por ejemplo, en k=0 da −4). Solo se anula en dos valores puntuales.">Para todo valor real de k</label>
+      <button class="chip-verificar quiz-check">Verificar</button>
+      <div class="quiz-feedback"></div>
+    </div>
+  </section>
+
+
+
+  <footer>
+    <div class="linea-final">
+      Material elaborado como recurso digital complementario a la Práctica 8 (Dependencia e
+      Independencia lineal), en articulación con las Prácticas 9 y 10 (Bases, Dimensión y Rango)
+      — Matemática I (10025), Departamento de Ciencias Básicas, Universidad Nacional de Luján.
+      Recordá: en los criterios de corrección, el resultado numérico sin la justificación del
+      procedimiento no tiene validez.
+    </div>
+  </footer>
+
+</div>
+
+<script>
+  // ---------- utilidades numéricas ----------
+  function fmt(x){
+    if (Math.abs(x) < 0.0005) return '0';
+    let r = Math.round(x * 10000) / 10000;
+    let s = r.toString();
+    if (s.includes('.')) s = s.replace(/0+$/,'').replace(/\.$/,'');
+    return s;
+  }
+
+  function det3(M){
+    return M[0][0]*(M[1][1]*M[2][2]-M[1][2]*M[2][1])
+         - M[0][1]*(M[1][0]*M[2][2]-M[1][2]*M[2][0])
+         + M[0][2]*(M[1][0]*M[2][1]-M[1][1]*M[2][0]);
+  }
+
+  function readMatrix(){
+    const M = [[0,0,0],[0,0,0],[0,0,0]];
+    for (let r=0;r<3;r++){
+      for (let c=0;c<3;c++){
+        const el = document.getElementById(`v-${r}-${c}`);
+        M[r][c] = parseFloat(el.value);
+        if (isNaN(M[r][c])) M[r][c] = 0;
+      }
+    }
+    return M;
+  }
+
+  function pintarMatriz(M){
+    const M0 = M[0].map(fmt), M1 = M[1].map(fmt), M2 = M[2].map(fmt);
+    return `<table>
+      <tr><td>${M0[0]}</td><td>${M0[1]}</td><td>${M0[2]}</td></tr>
+      <tr><td>${M1[0]}</td><td>${M1[1]}</td><td>${M1[2]}</td></tr>
+      <tr><td>${M2[0]}</td><td>${M2[1]}</td><td>${M2[2]}</td></tr>
+    </table>`;
+  }
+
+  function desarrolloDeterminante(a){
+    const t1 = a[1][1]*a[2][2] - a[1][2]*a[2][1];
+    const t2 = a[1][0]*a[2][2] - a[1][2]*a[2][0];
+    const t3 = a[1][0]*a[2][1] - a[1][1]*a[2][0];
+    const d  = a[0][0]*t1 - a[0][1]*t2 + a[0][2]*t3;
+
+    const linea1 = `det = ${fmt(a[0][0])}·(${fmt(a[1][1])}·${fmt(a[2][2])} − ${fmt(a[1][2])}·${fmt(a[2][1])}) `
+                 + `− ${fmt(a[0][1])}·(${fmt(a[1][0])}·${fmt(a[2][2])} − ${fmt(a[1][2])}·${fmt(a[2][0])}) `
+                 + `+ ${fmt(a[0][2])}·(${fmt(a[1][0])}·${fmt(a[2][1])} − ${fmt(a[1][1])}·${fmt(a[2][0])})`;
+    const linea2 = `det = ${fmt(a[0][0])}·(${fmt(t1)}) − ${fmt(a[0][1])}·(${fmt(t2)}) + ${fmt(a[0][2])}·(${fmt(t3)})`;
+    const linea3 = `det = ${fmt(d)}`;
+
+    return {linea1, linea2, linea3, d};
+  }
+
+  function analizar(){
+    const M = readMatrix();
+    const {linea1, linea2, linea3, d} = desarrolloDeterminante(M);
+
+    document.getElementById('calculo-determinante').innerHTML = `
+      <div class="paso-det">
+        <div class="paso-desc">Matriz formada por los tres vectores (uno por fila)</div>
+        ${pintarMatriz(M)}
+      </div>
+      <div class="paso-det">
+        <div class="paso-desc">Desarrollo por la primera fila</div>
+        <div class="formula-det">${linea1}</div>
+      </div>
+      <div class="paso-det">
+        <div class="paso-desc">Resolviendo los menores 2×2</div>
+        <div class="formula-det">${linea2}</div>
+      </div>
+      <div class="paso-det">
+        <div class="paso-desc">Determinante</div>
+        <div class="formula-det formula-final">${linea3}</div>
+      </div>
+    `;
+
+    let textoPrincipal, rotuloDiagrama, diagramaId;
+    if (Math.abs(d) > 0.0005){
+      textoPrincipal = `Como det = ${fmt(d)} ≠ 0, los tres vectores son linealmente independientes: generan todo R³.`;
+      rotuloDiagrama = 'Generan todo R³';
+      diagramaId = 'd-space';
+    } else {
+      textoPrincipal = `Como det = ${fmt(d)} = 0, los tres vectores son linealmente dependientes: no generan todo R³. Para saber si generan un plano o una recta hace falta hallar el rango (Práctica 9 y 10).`;
+      rotuloDiagrama = 'No generan todo R³';
+      diagramaId = 'd-menor';
+    }
+
+    document.getElementById('texto-conclusion-principal').textContent = textoPrincipal;
+
+    ['d-space','d-menor'].forEach(id => {
+      document.getElementById(id).style.display = (id === diagramaId) ? 'block' : 'none';
+    });
+    document.getElementById('rotulo-diagrama').textContent = rotuloDiagrama;
+
+    document.getElementById('resultado-explorador').classList.add('visible');
+  }
+
+  function cargarPreset(nombre){
+    const presets = {
+      li:    [[1,2,1],[0,1,5],[1,0,1]],
+      plano: [[1,2,3],[2,4,6],[0,1,1]],
+      recta: [[1,2,3],[2,4,6],[3,6,9]],
+      nulo:  [[0,0,0],[1,2,3],[4,5,6]],
+    };
+    const M = presets[nombre];
+    for (let r=0;r<3;r++){
+      for (let c=0;c<3;c++){
+        document.getElementById(`v-${r}-${c}`).value = M[r][c];
+      }
+    }
+    analizar();
+  }
+
+  // ---------- caso con parámetro k ----------
+  const kSlider = document.getElementById('k-slider');
+  function actualizarK(){
+    const k = parseFloat(kSlider.value);
+    document.getElementById('k-value').textContent = fmt(k);
+    const d = 2*k*k - 4;
+    document.getElementById('k-det').textContent = fmt(d);
+
+    const pct = ((k - (-3)) / 6) * 100;
+    document.getElementById('k-marker').style.left = pct + '%';
+
+    const msg = document.getElementById('k-message');
+    if (Math.abs(d) < 0.05){
+      msg.textContent = 'Estás muy cerca de un valor crítico: para k = ±√2 ≈ ±1.41, el determinante se anula y los tres vectores pasan a ser linealmente dependientes (generan, a lo sumo, un plano).';
+      msg.className = 'k-msg warn';
+    } else {
+      msg.textContent = `Con k = ${fmt(k)}, det = ${fmt(d)} ≠ 0: los vectores V₁, V₂ y V₃ son linealmente independientes y generan todo R³.`;
+      msg.className = 'k-msg ok';
+    }
+  }
+  kSlider.addEventListener('input', actualizarK);
+
+  // ---------- autoevaluación ----------
+  document.querySelectorAll('.quiz-check').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('.quiz-item');
+      const seleccionado = item.querySelector('input[type=radio]:checked');
+      const feedback = item.querySelector('.quiz-feedback');
+      if (!seleccionado){
+        feedback.textContent = 'Elegí una opción antes de verificar.';
+        feedback.className = 'quiz-feedback warn';
+        return;
+      }
+      const correcta = seleccionado.dataset.correct === 'true';
+      if (correcta){
+        feedback.innerHTML = `<strong>Correcto.</strong> ${seleccionado.dataset.explain}`;
+        feedback.className = 'quiz-feedback ok';
+      } else {
+        const opcionCorrecta = item.querySelector('input[data-correct="true"]');
+        feedback.innerHTML = `<strong>No es correcto.</strong> ${seleccionado.dataset.explain} <br><br><strong>Respuesta correcta:</strong> ${opcionCorrecta.dataset.explain}`;
+        feedback.className = 'quiz-feedback bad';
+      }
+    });
+  });
+
+  // inicialización
+  analizar();
+  actualizarK();
+</script>
+
+</body>
+</html>
