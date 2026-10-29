@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Laboratorio de independencia lineal — Matemática I (UNLu)</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📐</text></svg>">
+<style>
+:root{--bg:#f3f6f6;--card:#fff;--ink:#162839;--mut:#566673;--ac:#2e5266;--mu:#4a6741;--or:#b4532a;--line:#d3dcdf;--ok:#2a7a42;--bad:#b3392b;--grid:#e4eaec;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0f1a22;--card:#17262f;--ink:#e6eef2;--mut:#9fb2bd;--ac:#7fb2cc;--mu:#93c487;--or:#e8955f;--line:#2b3d49;--ok:#6fcf8d;--bad:#ff8a7a;--grid:#223541;color-scheme:dark}}
+:root[data-theme=dark]{--bg:#0f1a22;--card:#17262f;--ink:#e6eef2;--mut:#9fb2bd;--ac:#7fb2cc;--mu:#93c487;--or:#e8955f;--line:#2b3d49;--ok:#6fcf8d;--bad:#ff8a7a;--grid:#223541;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:860px;margin:0 auto;padding:20px 16px 48px}
+h1,h2{font-family:Georgia,"Times New Roman",serif;color:var(--ac);line-height:1.2}
+h1{font-size:2rem;margin:.2em 0}h2{font-size:1.4rem;margin:0 0 .4em}
+nav{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 22px}
+nav a{color:var(--ac);border:1px solid var(--line);border-radius:8px;padding:5px 11px;text-decoration:none;background:var(--card)}
+section{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:18px;margin:0 0 18px}
+p{margin:.5em 0;max-width:70ch}.mut{color:var(--mut);font-size:.92rem}
+canvas{width:100%;max-width:440px;height:auto;display:block;touch-action:none;border:1px solid var(--line);border-radius:8px;background:var(--bg)}
+.row{display:flex;flex-wrap:wrap;gap:18px;align-items:flex-start}.col{flex:1 1 280px;min-width:0}
+button,select{font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--ac);border-radius:8px;padding:6px 12px;cursor:pointer}
+button:hover{background:var(--grid)}button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid var(--or);outline-offset:2px}
+input[type=number]{width:4.4em;font:inherit;padding:5px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink)}
+input[type=range]{width:100%;accent-color:var(--ac)}
+.mat{display:grid;grid-template-columns:auto repeat(3,auto);gap:6px 8px;align-items:center;margin:8px 0}
+.v{font-weight:600}.ok{color:var(--ok);font-weight:600}.bad{color:var(--bad);font-weight:600}
+.box{border-left:4px solid var(--mu);padding:6px 12px;background:var(--bg);margin:10px 0}
+.tbl{overflow-x:auto}table{border-collapse:collapse;width:100%}td,th{border:1px solid var(--line);padding:6px 9px;text-align:left}
+.opts label{display:block;padding:5px 8px;margin:3px 0;border:1px solid var(--line);border-radius:8px;cursor:pointer}
+code{font-family:ui-monospace,Menlo,monospace;font-size:.92em}
+</style></head><body><main>
+<h1>Laboratorio de independencia lineal</h1>
+<p class="mut">Matemática I (10025) · Unidad 8 · UNLu. Cuatro simuladores para entender por qué un conjunto de vectores es LI o LD, y cómo justificarlo.</p>
+<p>Si V₃ = 2·V₁ − V₂, los tres vectores no aportan tres direcciones distintas: V₃ ya está “contenido” en lo que generan V₁ y V₂. Acá vas a ver esa idea moverse, calcularla y ponerla a prueba.</p>
+<nav><a href="#plano">Plano</a><a href="#espacio">Espacio R³</a><a href="#param">Parámetro k</a><a href="#practica">Decidí vos</a><a href="#resumen">Resultados clave</a><a href="#quiz">Autoevaluación</a></nav>
+
+<section id="plano"><h2>1. Dos vectores en el plano</h2>
+<p>Arrastrá los extremos de <b style="color:var(--ac)">V₁</b> y <b style="color:var(--mu)">V₂</b>. Cuando son paralelos (det = 0) el paralelogramo se aplasta y dejan de generar el plano. Arrastrá también <b style="color:var(--or)">W</b>: si V₁ y V₂ son LI, W siempre se escribe como a·V₁ + b·V₂.</p>
+<div class="row"><div class="col"><canvas id="c2" width="360" height="360" aria-label="Plano con tres vectores arrastrables"></canvas></div>
+<div class="col" id="o2" aria-live="polite"></div></div></section>
+
+<section id="espacio"><h2>2. Tres vectores en R³</h2>
+<p>Cada fila es un vector. Primero predecí, después mirá el cálculo.</p>
+<div id="pre"></div>
+<div class="row"><div class="col"><div class="mat" id="mx"></div>
+<label>Girar la vista <input type="range" id="rot" min="0" max="360" value="35"></label>
+<canvas id="c3" width="440" height="340" aria-label="Vectores en el espacio"></canvas></div>
+<div class="col" id="o3" aria-live="polite"></div></div></section>
+
+<section id="param"><h2>3. Un mismo conjunto, según el valor de k</h2>
+<p>La pregunta cambia: ¿para qué valores de k son LI? Mové k y mirá dónde la curva del determinante toca el eje.</p>
+<select id="fam" aria-label="Familia de vectores"></select>
+<div class="row"><div class="col"><canvas id="ck" width="480" height="240" aria-label="Gráfico de det(k)" style="max-width:480px"></canvas>
+<label>k = <b id="kv"></b><input type="range" id="k" min="-4" max="4" step="any" value="0"></label><div id="rb"></div></div>
+<div class="col" id="ok" aria-live="polite"></div></div></section>
+
+<section id="practica"><h2>4. ¿LI o LD? Decidí vos</h2>
+<p>Se generan tres vectores al azar. Elegí una respuesta y después verificá con el determinante.</p>
+<div id="pv" class="v"></div>
+<p><button id="bli">Son LI</button> <button id="bld">Son LD</button> <button id="bnx">Otro conjunto</button> <span class="mut" id="sc"></span></p>
+<div id="pf" aria-live="polite"></div></section>
+
+<section id="resumen"><h2>Resultados clave</h2><div class="tbl"><table>
+<tr><th>Situación</th><th>Criterio</th></tr>
+<tr><td>Un vector V</td><td>LI si y solo si V ≠ 0</td></tr>
+<tr><td>Dos vectores</td><td>LI si y solo si no son múltiplos entre sí</td></tr>
+<tr><td>Tres vectores de R³</td><td>LD si y solo si son coplanares</td></tr>
+<tr><td>k vectores de Rⁿ con k &gt; n</td><td>Siempre LD</td></tr>
+<tr><td>n vectores de Rⁿ</td><td>LI si y solo si el determinante de la matriz que forman es distinto de cero</td></tr></table></div>
+<div class="box"><b>Criterio de evaluación.</b> “det = 0, entonces LD” no alcanza. Hay que explicar por qué: c₁V₁ + c₂V₂ + c₃V₃ = 0 es un sistema homogéneo cuadrado, y tiene solo la solución trivial si y solo si el determinante es distinto de cero. Con det = 0 el determinante no dice si generan un plano o una recta: para eso hace falta el rango (Prácticas 9 y 10).</div></section>
+
+<section id="quiz"><h2>Autoevaluación</h2><div id="qs"></div></section>
+</main>
+<script>
+const $=s=>document.querySelector(s),css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const r=x=>String(Math.round(x*1e4)/1e4).replace("-","−"),p=x=>x<0?`(${r(x)})`:r(x),E=1e-9;
+const d3=m=>m[0][0]*(m[1][1]*m[2][2]-m[1][2]*m[2][1])-m[0][1]*(m[1][0]*m[2][2]-m[1][2]*m[2][0])+m[0][2]*(m[1][0]*m[2][1]-m[1][1]*m[2][0]);
+const cr=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]],nz=v=>v.some(x=>Math.abs(x)>E);
+function rank(m){if(Math.abs(d3(m))>E)return 3;for(let i=0;i<3;i++)for(let j=i+1;j<3;j++)if(nz(cr(m[i],m[j])))return 2;return m.flat().some(x=>Math.abs(x)>E)?1:0}
+function rel(m){let b=null,bn=0;const c=j=>m.map(f=>f[j]);for(let i=0;i<3;i++)for(let j=i+1;j<3;j++){const v=cr(c(i),c(j)),n=Math.hypot(...v);if(n>bn+E){bn=n;b=v}}
+ if(!b)return null;const mn=Math.min(...b.filter(x=>Math.abs(x)>E).map(Math.abs));return b.map(x=>x/mn)}
+function detTxt(m){const[a,b,c]=m[0],[d,e,f]=m[1],[g,h,i]=m[2];return `det = ${p(a)}·(${p(e)}·${p(i)} − ${p(f)}·${p(h)}) − ${p(b)}·(${p(d)}·${p(i)} − ${p(f)}·${p(g)}) + ${p(c)}·(${p(d)}·${p(h)} − ${p(e)}·${p(g)}) = <b>${r(d3(m))}</b>`}
+function relTxt(m){const c=rel(m);return c?`Una relación: ${r(c[0])}·V₁ + ${r(c[1])}·V₂ + ${r(c[2])}·V₃ = 0, de donde se despeja un vector como combinación lineal de los otros.`:""}
+const dimTxt=k=>["solo el vector nulo","una recta por el origen","un plano por el origen","todo R³"][k];
+function arrow(g,a,b,col,w=2.5){g.strokeStyle=g.fillStyle=col;g.lineWidth=w;g.beginPath();g.moveTo(...a);g.lineTo(...b);g.stroke();const t=Math.atan2(b[1]-a[1],b[0]-a[0]);if(Math.hypot(b[0]-a[0],b[1]-a[1])<4)return;g.beginPath();g.moveTo(...b);g.lineTo(b[0]-10*Math.cos(t-.4),b[1]-10*Math.sin(t-.4));g.lineTo(b[0]-10*Math.cos(t+.4),b[1]-10*Math.sin(t+.4));g.fill()}
+function lbl(g,t,x,y,col){g.fillStyle=col;g.font="600 14px system-ui";g.fillText(t,x+6,y-6)}
+
+/* 1. Plano */
+const S=36,C=180,V2=[[3,1],[1,3],[4,4]],cols=["--ac","--mu","--or"],nm=["V₁","V₂","W"];let drag=-1;
+const px=v=>[C+S*v[0],C-S*v[1]];
+function draw2(){const c=$("#c2"),g=c.getContext("2d");g.clearRect(0,0,360,360);g.strokeStyle=css("--grid");g.lineWidth=1;
+ for(let i=-5;i<=5;i++){g.beginPath();g.moveTo(C+S*i,0);g.lineTo(C+S*i,360);g.moveTo(0,C+S*i);g.lineTo(360,C+S*i);g.stroke()}
+ g.strokeStyle=css("--mut");g.beginPath();g.moveTo(0,C);g.lineTo(360,C);g.moveTo(C,0);g.lineTo(C,360);g.stroke();
+ const[a,b,w]=V2,det=a[0]*b[1]-a[1]*b[0],O=px([0,0]);
+ g.fillStyle=css("--ac")+"30";g.beginPath();[O,px(a),px([a[0]+b[0],a[1]+b[1]]),px(b)].forEach((q,i)=>i?g.lineTo(...q):g.moveTo(...q));g.fill();
+ let t=`<p>det = ${r(a[0])}·${p(b[1])} − ${p(a[1])}·${p(b[0])} = <b>${r(det)}</b></p>`;
+ if(Math.abs(det)>E){const x=(w[0]*b[1]-w[1]*b[0])/det,y=(a[0]*w[1]-a[1]*w[0])/det;
+  g.setLineDash([5,4]);arrow(g,O,px([x*a[0],x*a[1]]),css("--ac"),1.5);arrow(g,px([x*a[0],x*a[1]]),px(w),css("--mu"),1.5);g.setLineDash([]);
+  t+=`<p class="ok">V₁ y V₂ son LI: generan todo R².</p><p>W = <b>${r(x)}</b>·V₁ + <b>${r(y)}</b>·V₂ (se obtiene resolviendo un sistema con regla de Cramer).</p>`}
+ else t+=`<p class="bad">V₁ y V₂ son LD: son paralelos y generan, a lo sumo, una recta.</p><p>W solo se escribe como combinación de ellos si está sobre esa recta.</p>`;
+ arrow(g,O,px(a),css("--ac"));arrow(g,O,px(b),css("--mu"));arrow(g,O,px(w),css("--or"));
+ [a,b,w].forEach((v,i)=>{const q=px(v);g.beginPath();g.arc(q[0],q[1],6,0,7);g.fill();lbl(g,nm[i]+` (${r(v[0])}, ${r(v[1])})`,q[0],q[1],css(cols[i]))});
+ $("#o2").innerHTML=t+`<p class="mut">Los extremos se ajustan a pasos de 0,5.</p>`}
+const cv=$("#c2");
+cv.onpointerdown=e=>{const k=cv.width/cv.getBoundingClientRect().width,x=(e.offsetX)*k,y=(e.offsetY)*k;let best=-1,bd=22;V2.forEach((v,i)=>{const q=px(v),d=Math.hypot(q[0]-x,q[1]-y);if(d<bd){bd=d;best=i}});drag=best;if(best>=0)cv.setPointerCapture(e.pointerId)};
+cv.onpointermove=e=>{if(drag<0)return;const k=cv.width/cv.getBoundingClientRect().width,x=e.offsetX*k,y=e.offsetY*k,sn=v=>Math.max(-5,Math.min(5,Math.round(v*2)/2));V2[drag]=[sn((x-C)/S),sn((C-y)/S)];draw2()};
+cv.onpointerup=()=>drag=-1;
+
+/* 2. R³ */
+const PRE=[["LI (det = 10)",[[1,2,1],[0,1,5],[1,0,1]]],["LD, plano (V₂ = 2V₁)",[[1,2,3],[2,4,6],[0,1,1]]],["LD, plano (V₃ = 2V₁ + V₂)",[[1,0,-2],[3,1,-1],[5,1,-5]]],["LD, recta (rango 1)",[[1,2,3],[2,4,6],[3,6,9]]],["Con el vector nulo",[[1,2,3],[0,0,0],[4,5,6]]]];
+$("#pre").innerHTML=PRE.map((q,i)=>`<button data-i="${i}">${q[0]}</button> `).join("");
+$("#mx").innerHTML=[0,1,2].map(i=>`<b>V${"₁₂₃"[i]}</b>`+[0,1,2].map(j=>`<input type="number" step="any" id="m${i}${j}" aria-label="V${i+1} componente ${j+1}">`).join("")).join("");
+const get=()=>[0,1,2].map(i=>[0,1,2].map(j=>+$(`#m${i}${j}`).value||0));
+const set=m=>m.forEach((f,i)=>f.forEach((v,j)=>$(`#m${i}${j}`).value=v));
+function draw3(){const c=$("#c3"),g=c.getContext("2d"),W=440,H=340,m=get(),th=$("#rot").value*Math.PI/180,s=26;
+ const P=([x,y,z])=>{const u=x*Math.cos(th)-y*Math.sin(th),w=x*Math.sin(th)+y*Math.cos(th);return[W/2+s*u,H/2-s*(z*.9+w*.4)]};
+ g.clearRect(0,0,W,H);g.lineWidth=1;g.strokeStyle=css("--line");g.fillStyle=css("--mut");g.font="12px system-ui";
+ [[6,0,0,"x"],[0,6,0,"y"],[0,0,6,"z"]].forEach(([x,y,z,n])=>{g.beginPath();g.moveTo(...P([-x,-y,-z]));g.lineTo(...P([x,y,z]));g.stroke();const q=P([x,y,z]);g.fillText(n,q[0]+3,q[1])});
+ const rk=rank(m);let pr=null;
+ if(rk===2)for(let i=0;i<3&&!pr;i++)for(let j=i+1;j<3;j++)if(nz(cr(m[i],m[j]))){pr=[m[i],m[j]];break}
+ if(pr){const[a,b]=pr,q=(x,y)=>P(a.map((v,i)=>x*v+y*b[i]));g.fillStyle=css("--ac")+"33";g.strokeStyle=css("--ac");g.beginPath();[[-1,-1],[1,-1],[1,1],[-1,1]].forEach(([x,y],i)=>i?g.lineTo(...q(x,y)):g.moveTo(...q(x,y)));g.closePath();g.fill();g.stroke()}
+ m.forEach((v,i)=>{arrow(g,P([0,0,0]),P(v),css(cols[i]));const q=P(v);lbl(g,"V"+"₁₂₃"[i],q[0],q[1],css(cols[i]))})}
+function upd3(){const m=get(),d=d3(m),k=rank(m);
+ $("#o3").innerHTML=`<p>${detTxt(m)}</p><p class="${d?"ok":"bad"}">${d?"Son LI: forman una base de R³.":"Son LD."}</p><p>Rango = <b>${k}</b>: generan ${dimTxt(k)}.</p>`+(d?`<p class="mut">Plantear c₁V₁ + c₂V₂ + c₃V₃ = 0 da un sistema homogéneo cuadrado con solución única (la trivial).</p>`:`<p>${relTxt(m)}</p><div class="box">Con det = 0 sabemos que son LD, pero la dimensión (${k===2?"plano":k===1?"recta":"punto"}) sale de triangular y contar filas no nulas.</div>`);draw3()}
+$("#pre").onclick=e=>{const i=e.target.dataset.i;if(i!=null){set(PRE[i][1]);upd3()}};
+$("#mx").oninput=upd3;$("#rot").oninput=draw3;set(PRE[1][1]);
+
+/* 3. Parámetro */
+const F=[{n:"Ej. 10: (1,0,k), (k,0,2), (1,2,2)",m:k=>[[1,0,k],[k,0,2],[1,2,2]],f:"2k² − 4",R:[-Math.SQRT2,Math.SQRT2],L:["−√2","√2"]},
+{n:"Ej. 11 a): (1,0,−1), (−2,k,0), (0,−3,k+1)",m:k=>[[1,0,-1],[-2,k,0],[0,-3,k+1]],f:"k² + k − 6 = (k + 3)(k − 2)",R:[-3,2],L:["−3","2"]},
+{n:"Ej. 11 d): (1,0,k), (−2,2,3), (−1,1,1)",m:k=>[[1,0,k],[-2,2,3],[-1,1,1]],f:"−1 (constante)",R:[],L:[]}];
+$("#fam").innerHTML=F.map((f,i)=>`<option value="${i}">${f.n}</option>`).join("");
+function drawK(){const f=F[$("#fam").value],k=+$("#k").value,g=$("#ck").getContext("2d"),W=480,H=240,ys=[];
+ for(let x=-4;x<=4;x+=.1)ys.push(d3(f.m(x)));const lo=Math.min(0,...ys)-1,hi=Math.max(0,...ys)+1,X=x=>(x+4)/8*W,Y=y=>H-(y-lo)/(hi-lo)*H;
+ g.clearRect(0,0,W,H);g.strokeStyle=css("--mut");g.lineWidth=1;g.beginPath();g.moveTo(0,Y(0));g.lineTo(W,Y(0));g.stroke();
+ g.strokeStyle=css("--ac");g.lineWidth=2.5;g.beginPath();ys.forEach((y,i)=>i?g.lineTo(X(-4+i*.1),Y(y)):g.moveTo(X(-4),Y(y)));g.stroke();
+ g.fillStyle=css("--bad");f.R.forEach((x,i)=>{g.beginPath();g.arc(X(x),Y(0),5,0,7);g.fill();g.fillText(f.L[i],X(x)-8,Y(0)-9)});
+ const d=d3(f.m(k));g.fillStyle=css("--or");g.beginPath();g.arc(X(k),Y(d),6,0,7);g.fill();
+ $("#kv").textContent=r(k);$("#rb").innerHTML=f.R.map((x,i)=>`<button data-r="${x}">k = ${f.L[i]}</button> `).join("");
+ const ld=Math.abs(d)<1e-6;$("#ok").innerHTML=`<p>det(k) = <b>${f.f}</b></p><p>Con k = ${r(k)}: det = <b>${ld?"0":r(d)}</b></p><p class="${ld?"bad":"ok"}">${ld?"V₁, V₂ y V₃ son LD: generan, a lo sumo, un plano.":"V₁, V₂ y V₃ son LI: generan todo R³."}</p><div class="box">Conclusión para el parcial: ${f.R.length?`son LD si y solo si k ∈ {${f.L.join(", ")}}; para cualquier otro k real son LI.`:"el determinante nunca se anula: son LI para todo k real."}</div>`}
+$("#fam").onchange=drawK;$("#k").oninput=drawK;$("#rb").onclick=e=>{if(e.target.dataset.r){$("#k").value=e.target.dataset.r;drawK()}};
+
+/* 4. Práctica */
+let pm,sc=[0,0];
+function gen(){const R=()=>Math.floor(Math.random()*7)-3,a=[R(),R(),R()],b=[R(),R(),R()];let c;if(Math.random()<.5){const x=R()||1,y=R();c=a.map((v,i)=>x*v+y*b[i])}else c=[R(),R(),R()];pm=[a,b,c];
+ $("#pv").innerHTML=pm.map((v,i)=>`V${"₁₂₃"[i]} = (${v.map(r).join(", ")})`).join("<br>");$("#pf").innerHTML="";$("#sc").textContent=`Aciertos: ${sc[0]} de ${sc[1]}`}
+function ans(ld){const d=d3(pm),ok=(Math.abs(d)<E)===ld;sc[1]++;if(ok)sc[0]++;
+ $("#pf").innerHTML=`<p class="${ok?"ok":"bad"}">${ok?"Correcto.":"No es así."}</p><p>${detTxt(pm)}</p><p>${Math.abs(d)<E?"Son LD (rango "+rank(pm)+"). "+relTxt(pm):"Son LI: forman una base de R³."}</p>`;$("#sc").textContent=`Aciertos: ${sc[0]} de ${sc[1]}`}
+$("#bli").onclick=()=>ans(false);$("#bld").onclick=()=>ans(true);$("#bnx").onclick=gen;
+
+/* Autoevaluación */
+const Q=[["Dados V₁ = (2,4,6) y V₂ = (1,2,3), el conjunto {V₁, V₂} es:",["LI, porque tienen componentes distintas","LD, porque V₁ = 2·V₂","No se puede decidir sin un determinante","LI, porque ninguno es nulo"],1,"Dos vectores son LD si y solo si son múltiplos. Acá V₁ = 2·V₂."],
+["Sin calcular, ¿qué se afirma de 4 vectores de R³?",["Son LI porque hay muchos","Son necesariamente LD: en R³ no hay más de 3 vectores LI","Generan un hiperplano","No se puede afirmar nada"],1,"Con k > n el conjunto siempre es LD."],
+["El determinante de tres vectores de R³ dio 0. Se concluye que:",["Son LI","Son LD y generan, a lo sumo, un plano","Generan todo R³","Forman una base"],1,"det = 0 ⇒ el sistema homogéneo tiene soluciones no triviales ⇒ LD. La dimensión exacta pide el rango."],
+["Al plantear c₁V₁ + c₂V₂ + c₃V₃ = 0 en R³ se obtiene:",["Un sistema no homogéneo","Un sistema homogéneo cuadrado de 3 × 3","Un sistema con más incógnitas que ecuaciones","Un sistema sin solución"],1,"Es homogéneo (siempre compatible) y cuadrado; por eso el determinante decide."],
+["Para (1,0,k), (k,0,2), (1,2,2) es det = 2k² − 4. Son LD para:",["k = 0","k = √2 o k = −√2","ningún k real","todo k real"],1,"2k² − 4 = 0 ⇒ k² = 2 ⇒ k = ±√2."]];
+$("#qs").innerHTML=Q.map((q,i)=>`<div class="opts" data-q="${i}"><p><b>${i+1}.</b> ${q[0]}</p>${q[1].map((o,j)=>`<label><input type="radio" name="q${i}" value="${j}"> ${o}</label>`).join("")}<div class="mut"></div></div>`).join("");
+$("#qs").onchange=e=>{const d=e.target.closest("[data-q]"),q=Q[d.dataset.q],ok=+e.target.value===q[2];d.lastChild.innerHTML=`<span class="${ok?"ok":"bad"}">${ok?"Correcto. ":"Revisalo. "}</span>${q[3]}`};
+
+const all=()=>{draw2();upd3();drawK()};
+matchMedia("(prefers-color-scheme:dark)").addEventListener("change",all);
+gen();all();
+</script></body></html>
